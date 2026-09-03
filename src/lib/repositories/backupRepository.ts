@@ -12,6 +12,8 @@ const backupDailyLogSchema = z.object({
   isRefueled: z.boolean(),
   fuelLiters: z.number().nullable(),
   fuelEfficiency: z.number().nullable(),
+  isCommuteDiscountMorning: z.boolean().default(false),
+  isCommuteDiscountEvening: z.boolean().default(false),
   memo: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),

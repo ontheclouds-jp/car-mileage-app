@@ -116,6 +116,13 @@ export default function Home() {
                         : `${latestFuelEfficiency.toFixed(1)} km/L`}
                   </p>
                 </div>
+                <div>
+                  <p className="text-xs text-gray-500">通勤割利用回数</p>
+                  <p className="text-base font-bold text-gray-900">
+                    {monthlyStats.commuteTotalCount}回（朝{monthlyStats.commuteMorningCount}／夕
+                    {monthlyStats.commuteEveningCount}）
+                  </p>
+                </div>
               </div>
             </>
           )}

@@ -15,6 +15,12 @@ export interface MonthlyStats {
   fuelLitersTotal: number;
   /** その月に発生した給油区間の平均燃費。給油記録が1件もない場合はnull */
   averageFuelEfficiency: number | null;
+  /** その月の通勤割（朝）利用回数 */
+  commuteMorningCount: number;
+  /** その月の通勤割（夕）利用回数 */
+  commuteEveningCount: number;
+  /** その月の通勤割利用回数の合計（朝＋夕） */
+  commuteTotalCount: number;
 }
 
 /**
@@ -31,6 +37,8 @@ export async function getMonthlyStats(year: number, month: number): Promise<Mont
   let refuelCount = 0;
   let fuelLitersTotal = 0;
   const efficiencies: number[] = [];
+  let commuteMorningCount = 0;
+  let commuteEveningCount = 0;
 
   for (const log of monthLogs) {
     if (log.distanceFromPrev !== null) {
@@ -42,6 +50,8 @@ export async function getMonthlyStats(year: number, month: number): Promise<Mont
       if (log.fuelLiters !== null) fuelLitersTotal += log.fuelLiters;
       if (log.fuelEfficiency !== null) efficiencies.push(log.fuelEfficiency);
     }
+    if (log.isCommuteDiscountMorning) commuteMorningCount += 1;
+    if (log.isCommuteDiscountEvening) commuteEveningCount += 1;
   }
 
   const averageFuelEfficiency =
@@ -57,6 +67,9 @@ export async function getMonthlyStats(year: number, month: number): Promise<Mont
     refuelCount,
     fuelLitersTotal,
     averageFuelEfficiency,
+    commuteMorningCount,
+    commuteEveningCount,
+    commuteTotalCount: commuteMorningCount + commuteEveningCount,
   };
 }
 

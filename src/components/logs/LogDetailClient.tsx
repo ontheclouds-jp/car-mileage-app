@@ -9,6 +9,7 @@ import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { PurposeBadge } from "@/components/logs/PurposeBadge";
 import { deleteDailyLog, getDailyLogById } from "@/lib/repositories/dailyLogRepository";
 import { formatDateForDisplay, formatDateTime } from "@/lib/utils/date";
+import { commuteDiscountCount } from "@/types/dailyLog";
 
 export function LogDetailClient({ id }: { id: string }) {
   const router = useRouter();
@@ -90,6 +91,14 @@ export function LogDetailClient({ id }: { id: string }) {
               </dd>
             </div>
           )}
+          <div>
+            <dt className="text-sm text-gray-500">通勤割</dt>
+            <dd className="text-base text-gray-900">
+              朝：{log.isCommuteDiscountMorning ? "利用あり" : "利用なし"} ／ 夕：
+              {log.isCommuteDiscountEvening ? "利用あり" : "利用なし"}（
+              {commuteDiscountCount(log)}回）
+            </dd>
+          </div>
           {log.memo && (
             <div>
               <dt className="text-sm text-gray-500">メモ</dt>

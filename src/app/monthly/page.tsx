@@ -127,6 +127,17 @@ export default function MonthlyStatsPage() {
             )}
           </section>
 
+          <section className="rounded-xl border border-gray-200 bg-white p-4">
+            <p className="text-sm text-gray-500">通勤割利用回数</p>
+            <p className="mt-1 text-3xl font-bold text-indigo-700">
+              {stats.commuteTotalCount.toLocaleString()} 回
+            </p>
+            <p className="mt-1 text-sm text-gray-600">
+              朝：{stats.commuteMorningCount.toLocaleString()} 回 ／ 夕：
+              {stats.commuteEveningCount.toLocaleString()} 回
+            </p>
+          </section>
+
           <Button variant="secondary" className="w-full" onClick={handleExportCsv}>
             この月の記録をCSVで書き出す
           </Button>

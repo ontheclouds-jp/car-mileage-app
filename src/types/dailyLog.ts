@@ -25,6 +25,8 @@ export interface DailyLog {
   isRefueled: boolean;
   fuelLiters: number | null;
   fuelEfficiency: number | null; // 第2段階で計算対象。第1段階では常にnull
+  isCommuteDiscountMorning: boolean; // 通勤割（朝）利用の有無
+  isCommuteDiscountEvening: boolean; // 通勤割（夕）利用の有無
   memo: string;
   createdAt: string; // ISO日時
   updatedAt: string; // ISO日時
@@ -37,5 +39,15 @@ export interface DailyLogInput {
   purpose: Purpose;
   isRefueled: boolean;
   fuelLiters: number | null;
+  isCommuteDiscountMorning: boolean;
+  isCommuteDiscountEvening: boolean;
   memo: string;
+}
+
+/** その日の通勤割利用回数（朝＋夕、0〜2回）を返す */
+export function commuteDiscountCount(log: {
+  isCommuteDiscountMorning: boolean;
+  isCommuteDiscountEvening: boolean;
+}): number {
+  return (log.isCommuteDiscountMorning ? 1 : 0) + (log.isCommuteDiscountEvening ? 1 : 0);
 }

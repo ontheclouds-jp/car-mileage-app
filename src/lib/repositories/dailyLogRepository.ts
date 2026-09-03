@@ -208,6 +208,8 @@ export async function saveDailyLog(
     isRefueled: input.isRefueled,
     fuelLiters,
     fuelEfficiency,
+    isCommuteDiscountMorning: input.isCommuteDiscountMorning,
+    isCommuteDiscountEvening: input.isCommuteDiscountEvening,
     memo: input.memo,
     createdAt: existingRecord?.createdAt ?? now,
     updatedAt: now,

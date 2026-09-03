@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { PurposeBadge } from "./PurposeBadge";
 import { formatDateForDisplay } from "@/lib/utils/date";
-import type { DailyLog } from "@/types/dailyLog";
+import { commuteDiscountCount, type DailyLog } from "@/types/dailyLog";
 
 export function LogListItem({ log }: { log: DailyLog }) {
+  const commuteCount = commuteDiscountCount(log);
   return (
     <Link
       href={`/logs/${log.id}`}
@@ -18,6 +19,23 @@ export function LogListItem({ log }: { log: DailyLog }) {
           {log.isRefueled && (
             <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-sm font-medium text-amber-800">
               ⛽ {log.fuelLiters}L
+            </span>
+          )}
+          {commuteCount > 0 && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-indigo-100 px-2 py-0.5 text-sm font-medium text-indigo-800">
+              <span
+                title="朝の通勤割"
+                className={log.isCommuteDiscountMorning ? "" : "opacity-30"}
+              >
+                🌅
+              </span>
+              <span
+                title="夕の通勤割"
+                className={log.isCommuteDiscountEvening ? "" : "opacity-30"}
+              >
+                🌆
+              </span>
+              {commuteCount}回
             </span>
           )}
         </div>

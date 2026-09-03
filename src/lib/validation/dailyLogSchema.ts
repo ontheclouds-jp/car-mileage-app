@@ -19,6 +19,8 @@ export const dailyLogFormSchema = z
     }),
     isRefueled: z.boolean(),
     fuelLiters: z.number().nullable(),
+    isCommuteDiscountMorning: z.boolean(),
+    isCommuteDiscountEvening: z.boolean(),
     memo: z.string().max(500, "メモは500文字以内で入力してください"),
   })
   .superRefine((data, ctx) => {

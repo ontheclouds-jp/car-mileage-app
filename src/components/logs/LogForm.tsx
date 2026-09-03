@@ -42,6 +42,12 @@ export function LogForm({ mode, initialLog }: LogFormProps) {
   const [fuelLiters, setFuelLiters] = useState(
     initialLog?.fuelLiters != null ? String(initialLog.fuelLiters) : ""
   );
+  const [isCommuteDiscountMorning, setIsCommuteDiscountMorning] = useState(
+    initialLog?.isCommuteDiscountMorning ?? false
+  );
+  const [isCommuteDiscountEvening, setIsCommuteDiscountEvening] = useState(
+    initialLog?.isCommuteDiscountEvening ?? false
+  );
   const [memo, setMemo] = useState(initialLog?.memo ?? "");
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -120,6 +126,8 @@ export function LogForm({ mode, initialLog }: LogFormProps) {
       purpose,
       isRefueled,
       fuelLiters: parsedFuel,
+      isCommuteDiscountMorning,
+      isCommuteDiscountEvening,
       memo,
     };
 
@@ -311,6 +319,45 @@ export function LogForm({ mode, initialLog }: LogFormProps) {
             </p>
           </div>
         )}
+      </div>
+
+      <div>
+        <span className="block text-base font-medium text-gray-900">通勤割</span>
+        <p className="mt-1 text-sm text-gray-500">
+          高速道路の通勤割引を利用した場合にチェックしてください（片道1回＝1チェック）。
+        </p>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          <label
+            className={`flex min-h-11 items-center justify-center gap-2 rounded-lg border text-base font-medium ${
+              isCommuteDiscountMorning
+                ? "border-indigo-600 bg-indigo-600 text-white"
+                : "border-gray-300 bg-white text-gray-700"
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={isCommuteDiscountMorning}
+              onChange={(e) => setIsCommuteDiscountMorning(e.target.checked)}
+              className="sr-only"
+            />
+            朝
+          </label>
+          <label
+            className={`flex min-h-11 items-center justify-center gap-2 rounded-lg border text-base font-medium ${
+              isCommuteDiscountEvening
+                ? "border-indigo-600 bg-indigo-600 text-white"
+                : "border-gray-300 bg-white text-gray-700"
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={isCommuteDiscountEvening}
+              onChange={(e) => setIsCommuteDiscountEvening(e.target.checked)}
+              className="sr-only"
+            />
+            夕
+          </label>
+        </div>
       </div>
 
       <div>
