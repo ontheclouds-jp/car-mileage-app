@@ -1,6 +1,6 @@
 export const APP_NAME = "マイカー走行日誌";
-export const APP_VERSION = "v1.6.0";
-export const APP_LAST_UPDATED = "2026-09-03";
+export const APP_VERSION = "v1.7.0";
+export const APP_LAST_UPDATED = "2026-09-23";
 export const APP_DEVELOPER = "Claude Codeで作成";
 
 export interface ChangelogEntry {
@@ -11,6 +11,11 @@ export interface ChangelogEntry {
 
 // 新しいバージョンが先頭にくるように追加する
 export const APP_CHANGELOG: ChangelogEntry[] = [
+  {
+    version: "v1.7.0",
+    date: "2026-09-23",
+    description: "画面下部に固定タブメニュー（ホーム・記録一覧・月次集計・ヘルプ）を追加",
+  },
   {
     version: "v1.6.0",
     date: "2026-09-03",

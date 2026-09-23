@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { BottomNav } from "@/components/layout/BottomNav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -45,7 +46,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-gray-50">
         <ServiceWorkerRegister />
-        {children}
+        <main className="flex-1 pb-16">{children}</main>
+        <BottomNav />
       </body>
     </html>
   );
