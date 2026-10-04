@@ -1,5 +1,5 @@
 export const APP_NAME = "マイカー走行日誌";
-export const APP_VERSION = "v1.8.0";
+export const APP_VERSION = "v1.9.0";
 export const APP_LAST_UPDATED = "2026-10-04";
 export const APP_DEVELOPER = "Claude Codeで作成";
 
@@ -11,6 +11,11 @@ export interface ChangelogEntry {
 
 // 新しいバージョンが先頭にくるように追加する
 export const APP_CHANGELOG: ChangelogEntry[] = [
+  {
+    version: "v1.9.0",
+    date: "2026-10-04",
+    description: "月次集計画面に仕事/プライベートの走行比率表示を追加",
+  },
   {
     version: "v1.8.0",
     date: "2026-10-04",

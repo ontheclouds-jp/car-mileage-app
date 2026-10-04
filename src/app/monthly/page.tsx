@@ -6,7 +6,10 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { Button } from "@/components/ui/Button";
 import { PurposeBreakdownBar } from "@/components/monthly/PurposeBreakdownBar";
 import { getAllDailyLogsAscending } from "@/lib/repositories/dailyLogRepository";
-import { getMonthlyStats } from "@/lib/repositories/monthlyStatsRepository";
+import {
+  calcWorkPrivateRatio,
+  getMonthlyStats,
+} from "@/lib/repositories/monthlyStatsRepository";
 import { dailyLogsToCsv } from "@/lib/csv";
 import { downloadTextFile } from "@/lib/utils/download";
 import { formatYearMonth, getCurrentYearMonth, monthPrefix } from "@/lib/utils/date";
@@ -17,6 +20,7 @@ export default function MonthlyStatsPage() {
   const [month, setMonth] = useState(initial.month);
 
   const stats = useLiveQuery(() => getMonthlyStats(year, month), [year, month]);
+  const workPrivateRatio = stats ? calcWorkPrivateRatio(stats.distanceByPurpose) : null;
 
   const monthInputValue = `${year}-${String(month).padStart(2, "0")}`;
 
@@ -104,6 +108,17 @@ export default function MonthlyStatsPage() {
                 total={stats.totalDistance}
               />
             </div>
+            <p className="mt-3 text-sm text-gray-700">
+              <span className="text-gray-500">仕事／プライベート比率：</span>
+              {workPrivateRatio === null ? (
+                <span className="text-gray-500">データなし</span>
+              ) : (
+                <span className="font-bold">
+                  仕事{workPrivateRatio.workPercent}% ・ プライベート
+                  {workPrivateRatio.privatePercent}%
+                </span>
+              )}
+            </p>
           </section>
 
           <section className="rounded-xl border border-gray-200 bg-white p-4">
