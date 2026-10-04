@@ -10,7 +10,10 @@ import {
   getAllDailyLogs,
 } from "@/lib/repositories/dailyLogRepository";
 import { getLatestFuelEfficiency } from "@/lib/repositories/fuelHistoryRepository";
-import { getMonthlyStats } from "@/lib/repositories/monthlyStatsRepository";
+import {
+  calcWorkPrivateRatio,
+  getMonthlyStats,
+} from "@/lib/repositories/monthlyStatsRepository";
 import { formatDateForDisplay, formatYearMonth, getCurrentYearMonth, todayStr } from "@/lib/utils/date";
 
 export default function Home() {
@@ -26,6 +29,9 @@ export default function Home() {
   const latestFuelEfficiency = useLiveQuery(() => getLatestFuelEfficiency(), []);
 
   const hasNoRecords = allLogs !== undefined && allLogs.length === 0;
+  const workPrivateRatio = monthlyStats
+    ? calcWorkPrivateRatio(monthlyStats.distanceByPurpose)
+    : null;
 
   return (
     <div className="mx-auto flex max-w-lg flex-col gap-5 p-4">
@@ -98,6 +104,17 @@ export default function Home() {
                   total={monthlyStats.totalDistance}
                 />
               </div>
+              <p className="mt-2 text-sm text-gray-700">
+                <span className="text-gray-500">仕事／プライベート比率：</span>
+                {workPrivateRatio === null ? (
+                  <span className="text-gray-500">データなし</span>
+                ) : (
+                  <span className="font-bold">
+                    仕事{workPrivateRatio.workPercent}% ・ プライベート
+                    {workPrivateRatio.privatePercent}%
+                  </span>
+                )}
+              </p>
 
               <div className="mt-4 grid grid-cols-2 gap-2 border-t border-gray-100 pt-3">
                 <div>

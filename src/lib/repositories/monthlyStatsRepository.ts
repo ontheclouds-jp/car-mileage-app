@@ -73,3 +73,24 @@ export async function getMonthlyStats(year: number, month: number): Promise<Mont
   };
 }
 
+
+export interface WorkPrivateRatio {
+  /** 仕事の走行比率（%、整数） */
+  workPercent: number;
+  /** プライベートの走行比率（%、整数。workPercentとの合計は100） */
+  privatePercent: number;
+}
+
+/**
+ * 用途別走行距離から仕事／プライベートの走行比率を計算する（9.3a）。
+ * 「その他」は計算対象外。仕事＋プライベートが0kmの場合はnullを返す。
+ */
+export function calcWorkPrivateRatio(
+  distanceByPurpose: Record<Purpose, number>
+): WorkPrivateRatio | null {
+  const { work, private: priv } = distanceByPurpose;
+  const total = work + priv;
+  if (total <= 0) return null;
+  const workPercent = Math.round((work / total) * 100);
+  return { workPercent, privatePercent: 100 - workPercent };
+}
