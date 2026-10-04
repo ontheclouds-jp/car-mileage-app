@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { useLiveQuery } from "dexie-react-hooks";
+import { getLastAutoBackupAt, triggerAutoBackup } from "@/lib/autoBackup";
 import { Button } from "@/components/ui/Button";
 import { PurposeBadge } from "@/components/logs/PurposeBadge";
 import { PurposeBreakdownBar } from "@/components/monthly/PurposeBreakdownBar";
@@ -19,6 +21,14 @@ import { formatDateForDisplay, formatYearMonth, getCurrentYearMonth, todayStr } 
 export default function Home() {
   const today = todayStr();
   const { year, month } = getCurrentYearMonth();
+
+  useEffect(() => {
+    // この端末でまだ自動バックアップが成功したことがなければ、
+    // 既存データをクラウドへ退避するために一度だけ実行する（0件の場合は送信しない）。
+    if (getLastAutoBackupAt() === null) {
+      triggerAutoBackup();
+    }
+  }, []);
 
   const todayLog = useLiveQuery(
     () => findDailyLogByDate(today).then((l) => l ?? null),

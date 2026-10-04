@@ -14,6 +14,7 @@ import {
 import { dailyLogsToCsv } from "@/lib/csv";
 import { downloadTextFile } from "@/lib/utils/download";
 import { getLastBackupAt, recordBackupNow } from "@/lib/utils/backupInfo";
+import { getLastAutoBackupAt, triggerAutoBackup } from "@/lib/autoBackup";
 import { formatDateTime, getCurrentYearMonth, todayStr } from "@/lib/utils/date";
 
 const DELETE_CONFIRM_PHRASE = "削除する";
@@ -26,6 +27,7 @@ export default function DataManagementPage() {
   );
 
   const [lastBackupAt, setLastBackupAt] = useState<string | null>(() => getLastBackupAt());
+  const [lastAutoBackupAt] = useState<string | null>(() => getLastAutoBackupAt());
   const [restoreMessage, setRestoreMessage] = useState<string | null>(null);
   const [restoreError, setRestoreError] = useState<string | null>(null);
   const [pendingRestoreFile, setPendingRestoreFile] = useState<File | null>(null);
@@ -69,6 +71,7 @@ export default function DataManagementPage() {
     try {
       const text = await file.text();
       const count = await restoreBackupJson(text);
+      triggerAutoBackup();
       setRestoreMessage(`${count}件の記録を復元しました。`);
     } catch (err) {
       if (err instanceof InvalidBackupFileError) {
@@ -133,6 +136,15 @@ export default function DataManagementPage() {
         <p className="text-sm text-gray-700">
           最終バックアップ：{lastBackupAt ? formatDateTime(lastBackupAt) : "未実施"}
         </p>
+        <div className="rounded-lg bg-blue-50 p-3 text-sm text-blue-900">
+          <p>
+            このバックアップはクラウドにも自動保存されています。記録を保存・編集・削除するたびに、全データが自動でクラウドへバックアップされるので、安心してお使いください。
+          </p>
+          <p className="mt-1">
+            最終自動バックアップ：
+            {lastAutoBackupAt ? formatDateTime(lastAutoBackupAt) : "未実施"}
+          </p>
+        </div>
         <Button onClick={handleExportBackup}>JSONバックアップを書き出す</Button>
       </section>
 

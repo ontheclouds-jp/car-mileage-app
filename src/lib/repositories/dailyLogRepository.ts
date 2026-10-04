@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "@/lib/db/db";
+import { triggerAutoBackup } from "@/lib/autoBackup";
 import type { DailyLog, DailyLogInput } from "@/types/dailyLog";
 
 /** 走行距離計の値が直前の記録より小さい場合のエラー */
@@ -231,6 +232,7 @@ export async function saveDailyLog(
     await recalcFollowingFuelEfficiency(oldLogDate, record.id);
   }
 
+  triggerAutoBackup();
   return record;
 }
 
@@ -241,4 +243,5 @@ export async function deleteDailyLog(id: string): Promise<void> {
   await db.dailyLogs.delete(id);
   await recalcFollowingDistance(target.logDate, id);
   await recalcFollowingFuelEfficiency(target.logDate, id);
+  triggerAutoBackup();
 }
